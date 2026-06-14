@@ -106,7 +106,7 @@ const AboutHero = () => {
               <div className="aspect-[3/4] w-full bg-zinc-900 overflow-hidden">
                 <img
                   src="/chetan_profile_photo.png"
-                  alt="Chetan Pratap Singh — Founder, NatureXress Hub"
+                  alt="Chetan Pratap Singh — Founder, NatureXpress Hub"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -114,7 +114,7 @@ const AboutHero = () => {
               {/* Name overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-6">
                 <p className="text-white font-black text-xl tracking-tight">Chetan Pratap Singh</p>
-                <p className="text-[#f59e0b] text-sm font-bold tracking-widest uppercase mt-1">Founder & CEO — NatureXress Hub</p>
+                <p className="text-[#f59e0b] text-sm font-bold tracking-widest uppercase mt-1">Founder & CEO — NatureXpress Hub</p>
               </div>
             </div>
           </motion.div>
@@ -161,7 +161,7 @@ const AboutHero = () => {
             transition={{ duration: 0.8, delay: 0.45 }}
             className="text-gray-400 text-lg leading-relaxed max-w-xl mb-10"
           >
-            <strong className="text-white font-black">NatureXress Hub</strong> is led by{' '}
+            <strong className="text-white font-black">NatureXpress Hub</strong> is led by{' '}
             <strong className="text-white font-black">Chetan Pratap Singh</strong> — a versatile digital architect who bridges complex engineering, data-driven marketing, and AI-powered automation. One expert. Every angle covered.
           </motion.p>
 

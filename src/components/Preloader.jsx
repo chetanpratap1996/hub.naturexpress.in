@@ -82,7 +82,7 @@ const Preloader = () => {
                   transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
                   className="text-white text-3xl md:text-4xl font-black tracking-tight"
                 >
-                  NatureXress<span className="text-[#f59e0b]">Hub</span>
+                  NatureXpress<span className="text-[#f59e0b]">Hub</span>
                 </motion.p>
               </div>
 

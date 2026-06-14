@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chetanpratapsingh.com/sitemap.xml
+Sitemap: https://hub.naturexpress.in/sitemap.xml

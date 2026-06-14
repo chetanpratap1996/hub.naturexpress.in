@@ -218,7 +218,7 @@ const Contact = () => {
             {/* Blockquote */}
             <div className="relative pl-6 border-l-2 border-[#f59e0b]/50">
               <p className="text-gray-300 text-xl md:text-2xl font-medium leading-relaxed max-w-md italic">
-                "Whether you need a full-stack app, a marketing overhaul, or an AI-powered system — NatureXress Hub is here to make it happen."
+                "Whether you need a full-stack app, a marketing overhaul, or an AI-powered system — NatureXpress Hub is here to make it happen."
               </p>
               <p className="text-[#f59e0b] font-black mt-4 not-italic text-sm tracking-wide">— Chetan Pratap Singh, Founder</p>
             </div>

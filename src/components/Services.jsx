@@ -263,7 +263,7 @@ const Services = () => {
               Get in Touch →
             </a>
             <a
-              href={`https://wa.me/918077170715?text=${encodeURIComponent("Hi Chetan, I found NatureXress Hub and I'd like to discuss a project.")}`}
+              href={`https://wa.me/918077170715?text=${encodeURIComponent("Hi Chetan, I found NatureXpress Hub and I'd like to discuss a project.")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-4 bg-white/5 text-white font-bold rounded-full border border-white/10 hover:bg-white/10 hover:border-white/30 transition-all duration-300 text-sm"

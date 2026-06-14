@@ -68,7 +68,7 @@ const Navbar = () => {
             <div className="w-7 h-7 rounded-lg bg-[#f59e0b]/15 border border-[#f59e0b]/40 flex items-center justify-center mr-1 group-hover:bg-[#f59e0b]/25 transition-colors duration-300">
               <span className="text-[#f59e0b] text-[10px] font-black">NX</span>
             </div>
-            <span className="text-white text-lg md:text-xl font-black tracking-tight leading-none">NatureXress</span>
+            <span className="text-white text-lg md:text-xl font-black tracking-tight leading-none">NatureXpress</span>
             <span className="text-[#f59e0b] text-lg md:text-xl font-black tracking-tight leading-none">Hub</span>
           </Link>
         </motion.div>

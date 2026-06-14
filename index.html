@@ -7,29 +7,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>NatureXress Hub | Enterprise Digital Agency — Web, AI & Growth</title>
-    <meta name="title" content="NatureXress Hub | Enterprise Digital Agency — Web, AI & Growth" />
-    <meta name="description" content="NatureXress Hub is a precision-focused digital agency founded by Chetan Pratap Singh. We build enterprise-grade web apps, AI automation, and growth systems that scale brands from zero to industry leader." />
-    <meta name="keywords" content="NatureXress Hub, digital agency, web development, AI automation, digital marketing, YouTube growth, Chetan Pratap Singh" />
-    <meta name="author" content="Chetan Pratap Singh — NatureXress Hub" />
+    <title>NatureXpress Hub | Enterprise Digital Agency — Web, AI & Growth</title>
+    <meta name="title" content="NatureXpress Hub | Enterprise Digital Agency — Web, AI & Growth" />
+    <meta name="description" content="Scale your brand from zero to industry leader. NatureXpress Hub delivers enterprise web apps and AI automation in India. Start your audit!" />
+    <meta name="author" content="Chetan Pratap Singh — NatureXpress Hub" />
+
+    <!-- Site Verification -->
+    <meta name="google-site-verification" content="YOUR_GSC_CODE_HERE" />
+    <meta name="msvalidate.01" content="YOUR_BING_CODE_HERE" />
+
+    <!-- Hreflang and Canonical -->
+    <link rel="canonical" href="https://hub.naturexpress.in/" />
+    <link rel="alternate" hreflang="en-IN" href="https://hub.naturexpress.in/" />
+    <link rel="alternate" hreflang="hi" href="https://hub.naturexpress.in/" />
+    <link rel="alternate" hreflang="x-default" href="https://hub.naturexpress.in/" />
 
     <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://hub.naturexpress.in/" />
-    <meta property="og:title" content="NatureXress Hub | Enterprise Digital Agency" />
-    <meta property="og:description" content="Precision-engineered Web, AI Automation & Digital Marketing by Chetan Pratap Singh. We scale brands to enterprise level." />
+    <meta property="og:title" content="NatureXpress Hub | Enterprise Digital Agency" />
+    <meta property="og:description" content="Scale your brand from zero to industry leader. NatureXpress Hub delivers enterprise web apps and AI automation in India. Start your audit!" />
     <meta property="og:image" content="https://hub.naturexpress.in/og-image.png" />
-    <meta property="og:site_name" content="NatureXress Hub" />
+    <meta property="og:site_name" content="NatureXpress Hub" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://hub.naturexpress.in/" />
-    <meta property="twitter:title" content="NatureXress Hub | Enterprise Digital Agency" />
-    <meta property="twitter:description" content="Precision-engineered Web, AI Automation & Digital Marketing by Chetan Pratap Singh. We scale brands to enterprise level." />
+    <meta property="twitter:title" content="NatureXpress Hub | Enterprise Digital Agency" />
+    <meta property="twitter:description" content="Scale your brand from zero to industry leader. NatureXpress Hub delivers enterprise web apps and AI automation in India. Start your audit!" />
     <meta property="twitter:image" content="https://hub.naturexpress.in/og-image.png" />
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://hub.naturexpress.in/" />
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://hub.naturexpress.in/#organization",
+          "name": "NatureXpress Hub",
+          "url": "https://hub.naturexpress.in/",
+          "logo": "https://hub.naturexpress.in/og-image.png",
+          "founder": {
+            "@type": "Person",
+            "name": "Chetan Pratap Singh"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "availableLanguage": ["English", "Hindi"]
+          }
+        },
+        {
+          "@type": "LocalBusiness",
+          "@id": "https://hub.naturexpress.in/#localbusiness",
+          "name": "NatureXpress Hub",
+          "url": "https://hub.naturexpress.in/",
+          "image": "https://hub.naturexpress.in/og-image.png",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "IN"
+          },
+          "priceRange": "$$$"
+        },
+        {
+          "@type": "Service",
+          "name": "Enterprise Web Development & AI Automation",
+          "provider": {
+            "@id": "https://hub.naturexpress.in/#organization"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://hub.naturexpress.in/"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
 
     <!-- Google Analytics (GA4) Placeholder -->
     <!-- PASTE YOUR GOOGLE ANALYTICS SCRIPT TAG HERE BEFORE DEPLOYING -->
@@ -45,7 +106,7 @@
 
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app-html--></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -9,6 +9,7 @@ const Hero = () => {
 
   return (
     <section className="relative w-full bg-black flex justify-center items-center pt-24 md:pt-[100px]" id="home">
+      <h1 className="sr-only">NatureXpress Hub - Enterprise Web Apps, AI Automation & Growth Systems</h1>
       <img
         src="/hero-bg.png"
         alt="Hero Section"

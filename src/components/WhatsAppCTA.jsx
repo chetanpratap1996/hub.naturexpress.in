@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const WhatsAppCTA = () => {
   const whatsappNumber = '918077170715';
-  const message = "Hi Chetan, I found NatureXress Hub and I'd like to discuss a project with you!";
+  const message = "Hi Chetan, I found NatureXpress Hub and I'd like to discuss a project with you!";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
   return (

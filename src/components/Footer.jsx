@@ -79,7 +79,7 @@ const Footer = () => {
               <div className="w-8 h-8 rounded-xl bg-[#f59e0b]/15 border border-[#f59e0b]/40 flex items-center justify-center">
                 <span className="text-[#f59e0b] text-xs font-black">NX</span>
               </div>
-              <span className="text-white text-xl font-black tracking-tight">NatureXress</span>
+              <span className="text-white text-xl font-black tracking-tight">NatureXpress</span>
               <span className="text-[#f59e0b] text-xl font-black tracking-tight">Hub</span>
             </div>
 
@@ -169,7 +169,7 @@ const Footer = () => {
           className="text-[12vw] md:text-[10vw] leading-none font-black tracking-tighter lowercase text-white/[0.04] w-full text-center"
           aria-hidden="true"
         >
-          naturexress<span className="text-[#f59e0b]/10">hub</span>
+          NatureXpress<span className="text-[#f59e0b]/10">hub</span>
         </h2>
       </div>
 
@@ -178,7 +178,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
           <p className="text-gray-600 text-xs font-medium">
-            © {year} NatureXress Hub. All rights reserved. Founded by{' '}
+            © {year} NatureXpress Hub. All rights reserved. Founded by{' '}
             <span className="text-gray-400 font-bold">Chetan Pratap Singh</span>.
           </p>
 
