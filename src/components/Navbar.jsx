@@ -63,7 +63,7 @@ const Navbar = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: 'easeOut', delay: 2.4 }}
         >
-          <Link to="/" className="flex items-center gap-1.5 group">
+          <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1.5 group">
             {/* NX badge */}
             <div className="w-7 h-7 rounded-lg bg-[#f59e0b]/15 border border-[#f59e0b]/40 flex items-center justify-center mr-1 group-hover:bg-[#f59e0b]/25 transition-colors duration-300">
               <span className="text-[#f59e0b] text-[10px] font-black">NX</span>
@@ -90,7 +90,15 @@ const Navbar = () => {
             return (
               <motion.div key={link.name} variants={itemVariants}>
                 {link.isRouterLink ? (
-                  <Link to={link.path} className={linkClass}>
+                  <Link 
+                    to={link.path} 
+                    className={linkClass}
+                    onClick={() => {
+                      if (link.path === '/') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                  >
                     {link.name}
                     {isActive && (
                       <motion.div
@@ -177,7 +185,12 @@ const Navbar = () => {
                   <Link
                     key={link.name}
                     to={link.path}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      if (link.path === '/') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
                     className="text-white/80 hover:text-white font-semibold text-lg px-4 py-3 rounded-xl hover:bg-white/5 transition-all duration-200"
                   >
                     {link.name}
