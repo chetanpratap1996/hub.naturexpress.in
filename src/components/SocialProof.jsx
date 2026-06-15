@@ -23,7 +23,7 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '', prefix = '' }) => {
   }, [end, duration, inView]);
 
   return (
-    <div ref={ref} className="text-5xl md:text-7xl font-black text-white tracking-tighter tabular-nums">
+    <div ref={ref} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter tabular-nums">
       {prefix}{count}{suffix}
     </div>
   );
@@ -65,7 +65,6 @@ const SocialProof = () => {
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              whileHover={{ y: -8 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`flex flex-col items-center justify-center p-6 md:p-8 text-center cursor-default group

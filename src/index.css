@@ -90,14 +90,17 @@ body {
   animation: wa-ring 2s ease-out infinite;
 }
 
-/* ── Card 3D hover ─────────────────────────────────────────── */
+/* ── Card 3D hover ────────────────────────────────────── */
 .card-hover {
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.card-hover:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 30px 70px rgba(245, 158, 11, 0.12), 0 15px 30px rgba(0,0,0,0.4);
+/* Only apply hover lift on devices that actually support hover (not mobile touch) */
+@media (hover: hover) and (pointer: fine) {
+  .card-hover:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 70px rgba(245, 158, 11, 0.12), 0 15px 30px rgba(0,0,0,0.4);
+  }
 }
 
 /* ── Timeline connector ────────────────────────────────────── */
@@ -136,10 +139,49 @@ body {
 ::-webkit-scrollbar-track { background: #000; }
 ::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 2px; }
 
-/* ── Selection ─────────────────────────────────────────────── */
+/* ── Selection ───────────────────────────────────────────────── */
 ::selection {
   background: rgba(245, 158, 11, 0.3);
   color: white;
 }
 
+/* ── Scroll anchor offset (for fixed navbar) ───────────────────── */
+section[id] {
+  scroll-margin-top: 80px;
+}
 
+/* ── iOS Safe-Area Insets (notch support) ───────────────────── */
+.safe-top    { padding-top:    env(safe-area-inset-top);    }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+/* ── Glassmorphism with @supports fallback ──────────────────── */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass {
+    background: rgba(5, 5, 5, 0.95);
+  }
+}
+
+/* ── Accessibility: Reduced Motion ─────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-left,
+  .marquee-right {
+    animation: none;
+  }
+  .wa-ring::before {
+    animation: none;
+  }
+  .glow-pulse {
+    animation: none;
+  }
+  .btn-shimmer::after {
+    animation: none;
+  }
+}

@@ -31,7 +31,7 @@ const FloatingBadge = ({ label, icon, style, delay }) => {
       animate={inView ? { opacity: 1, scale: 1, y: 0 } : {}}
       transition={{ delay, duration: 0.6, ease: 'backOut' }}
       style={style}
-      className="absolute bg-zinc-900/90 border border-white/10 backdrop-blur-md rounded-2xl px-4 py-2.5 flex items-center gap-2.5 shadow-2xl z-30 hover:border-[#f59e0b]/50 transition-colors duration-300"
+      className="hidden lg:flex absolute bg-zinc-900/90 border border-white/10 backdrop-blur-md rounded-2xl px-4 py-2.5 items-center gap-2.5 shadow-2xl z-30 hover:border-[#f59e0b]/50 transition-colors duration-300"
     >
       <span className="text-xl">{icon}</span>
       <span className="text-white text-xs font-bold tracking-wide whitespace-nowrap">{label}</span>
@@ -77,7 +77,7 @@ const AboutHero = () => {
         {/* LEFT: Image Column */}
         <motion.div style={{ y: imageY }} className="relative w-full lg:w-[420px] shrink-0 flex justify-center">
 
-          {/* Floating badges */}
+          {/* Floating badges — hidden on mobile to avoid overflow from hardcoded positions */}
           <FloatingBadge label="React & Next.js Expert" icon="⚛️" style={{ top: '-18px', left: '-20px' }}  delay={0.5} />
           <FloatingBadge label="AI Automation"          icon="🤖" style={{ top: '90px', right: '-30px' }}  delay={0.7} />
           <FloatingBadge label="YouTube Growth"         icon="🎬" style={{ bottom: '120px', left: '-35px' }} delay={0.9} />
@@ -92,7 +92,7 @@ const AboutHero = () => {
             className="relative"
           >
             <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#f59e0b]/30 to-transparent blur-3xl scale-110 opacity-60" />
-            <div className="relative w-[300px] md:w-[360px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.6)] group">
+            <div className="relative w-full max-w-[300px] md:max-w-[360px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_40px_80px_rgba(0,0,0,0.6)] group">
               {/* Online indicator */}
               <div className="absolute top-4 right-4 flex items-center gap-2 z-20 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1.5 border border-green-500/30">
                 <span className="relative flex h-2 w-2">
@@ -114,7 +114,7 @@ const AboutHero = () => {
               {/* Name overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent p-6">
                 <p className="text-white font-black text-xl tracking-tight">Chetan Pratap Singh</p>
-                <p className="text-[#f59e0b] text-sm font-bold tracking-widest uppercase mt-1">Founder & CEO — NatureXpress Hub</p>
+                <p className="text-[#f59e0b] text-sm font-bold tracking-widest uppercase mt-1">MBA in Entrepreneurship and Venture Development</p>
               </div>
             </div>
           </motion.div>

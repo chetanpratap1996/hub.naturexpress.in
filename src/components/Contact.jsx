@@ -32,8 +32,8 @@ const contactLinks = [
       </svg>
     ),
     label: 'LinkedIn',
-    value: 'linkedin.com/in/chetanpratap',
-    href: 'https://linkedin.com/in/chetanpratap',
+    value: 'linkedin.com/in/chetan-pratap-singh-46430918b',
+    href: 'https://www.linkedin.com/in/chetan-pratap-singh-46430918b',
     hoverClass: 'hover:text-sky-400 hover:border-sky-400/30 hover:bg-sky-400/5',
   },
 ];
@@ -178,7 +178,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-7xl font-black text-white leading-[1.0] tracking-tight mb-6"
+            className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-[1.0] tracking-tight mb-6"
           >
             Let's Build{' '}
             <span className="text-gradient-orange">Together</span>
@@ -305,9 +305,9 @@ const Contact = () => {
                     <div className="w-20 h-20 rounded-full bg-green-500/20 border border-green-500/40 flex items-center justify-center text-4xl mb-6">✅</div>
                     <h4 className="text-white font-black text-2xl mb-2">Message Sent!</h4>
                     <p className="text-gray-500 font-medium">I'll get back to you very soon. Thank you!</p>
-                    <button
+                      <button
                       onClick={() => { setIsSuccess(false); setResult(''); }}
-                      className="mt-8 px-6 py-2.5 bg-white/5 border border-white/10 text-gray-400 text-sm font-bold rounded-full hover:bg-white/10 transition-all duration-300"
+                      className="mt-8 px-6 py-3 bg-white/5 border border-white/10 text-gray-400 text-sm font-bold rounded-full hover:bg-white/10 transition-all duration-300 min-h-[44px]"
                     >
                       Send another
                     </button>
@@ -322,7 +322,7 @@ const Contact = () => {
                     className="flex flex-col gap-5"
                   >
                     {/* Name row */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-4">
                       <FloatingInput id="firstName" name="First Name" label="First Name" required />
                       <FloatingInput id="lastName"  name="Last Name"  label="Last Name"  required />
                     </div>
@@ -338,7 +338,7 @@ const Contact = () => {
                         {SERVICE_TAGS.map((tag) => (
                           <label key={tag} className="cursor-pointer">
                             <input type="checkbox" name="services" value={tag} className="sr-only peer" />
-                            <span className="px-3 py-1.5 text-xs font-bold rounded-full border border-white/10 text-gray-500 peer-checked:bg-[#f59e0b]/15 peer-checked:border-[#f59e0b]/50 peer-checked:text-[#f59e0b] hover:border-white/20 hover:text-gray-300 transition-all duration-200 select-none block">
+                            <span className="px-3 py-2.5 text-xs font-bold rounded-full border border-white/10 text-gray-500 peer-checked:bg-[#f59e0b]/15 peer-checked:border-[#f59e0b]/50 peer-checked:text-[#f59e0b] hover:border-white/20 hover:text-gray-300 transition-all duration-200 select-none block min-h-[40px] flex items-center">
                               {tag}
                             </span>
                           </label>
@@ -355,7 +355,7 @@ const Contact = () => {
                             key={opt}
                             type="button"
                             onClick={() => setSelectedBudget(selectedBudget === opt ? '' : opt)}
-                            className={`px-3 py-1.5 text-xs font-bold rounded-full border transition-all duration-200 select-none ${
+                            className={`px-3 py-2.5 text-xs font-bold rounded-full border transition-all duration-200 select-none min-h-[40px] ${
                               selectedBudget === opt
                                 ? 'bg-white/10 border-white/40 text-white'
                                 : 'border-white/10 text-gray-500 hover:border-white/20 hover:text-gray-300'

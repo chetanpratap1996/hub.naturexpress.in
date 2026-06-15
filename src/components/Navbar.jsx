@@ -30,6 +30,12 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Body scroll lock when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   const navLinks = [
     { name: 'Home',      path: '/',           section: 'home',      isRouterLink: true },
     { name: 'Services',  path: '/#services',  section: 'services',  isRouterLink: false },
@@ -146,8 +152,9 @@ const Navbar = () => {
           {/* Mobile hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 focus:outline-none"
+            className="md:hidden relative min-w-[44px] min-h-[44px] flex flex-col items-center justify-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#f59e0b]/60 rounded-lg"
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
           >
             <motion.span
               animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}

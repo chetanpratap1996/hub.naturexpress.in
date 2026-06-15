@@ -138,7 +138,7 @@ const TimelineCard = ({ item, index }) => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.35 }}
-          className="mt-2 text-[9px] font-black tracking-widest uppercase text-[#f59e0b] text-center whitespace-nowrap"
+          className="mt-2 text-[10px] sm:text-xs font-black tracking-widest uppercase text-[#f59e0b] text-center whitespace-nowrap"
         >
           {item.year}
         </motion.p>

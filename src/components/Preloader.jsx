@@ -38,7 +38,7 @@ const Preloader = () => {
           initial={{ opacity: 1 }}
           exit={{ y: '-100%', opacity: 1 }}
           transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 w-full h-screen z-[100000] flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 w-full h-[100dvh] z-[9999] flex flex-col items-center justify-center overflow-hidden"
           style={{ background: 'linear-gradient(135deg, #0a0a0a 0%, #111 50%, #0d0d0d 100%)' }}
         >
           {/* Grid texture */}

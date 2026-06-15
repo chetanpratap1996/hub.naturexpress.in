@@ -26,7 +26,7 @@ const WhatsAppIcon = () => (
 );
 
 const socialLinks = [
-  { icon: <LinkedInIcon />,  href: 'https://linkedin.com/in/chetanpratap', label: 'LinkedIn' },
+  { icon: <LinkedInIcon />,  href: 'https://www.linkedin.com/in/chetan-pratap-singh-46430918b', label: 'LinkedIn' },
   { icon: <YouTubeIcon />,   href: '#',                                     label: 'YouTube' },
   { icon: <InstagramIcon />, href: '#',                                     label: 'Instagram' },
   { icon: <WhatsAppIcon />,  href: 'https://wa.me/918077170715',            label: 'WhatsApp' },
@@ -70,7 +70,7 @@ const Footer = () => {
 
       {/* Top section */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-20 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr_1.5fr] gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.5fr] gap-12 lg:gap-8">
 
           {/* Brand Column */}
           <div className="flex flex-col gap-6">
@@ -107,7 +107,7 @@ const Footer = () => {
                   aria-label={social.label}
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
+                  className="w-11 h-11 rounded-xl bg-white/5 border border-white/[0.08] flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all duration-300"
                 >
                   {social.icon}
                 </motion.a>
@@ -125,7 +125,7 @@ const Footer = () => {
                   <li key={j}>
                     <a
                       href={link.href}
-                      className="text-gray-500 text-sm font-medium hover:text-white transition-colors duration-200 truncate block"
+                      className="text-gray-500 text-sm font-medium hover:text-white transition-colors duration-200 truncate block py-1"
                     >
                       {link.label}
                     </a>
@@ -153,7 +153,7 @@ const Footer = () => {
               </div>
               <button 
                 type="submit" 
-                className="w-full bg-[#f59e0b] text-white font-bold text-sm px-4 py-3 rounded-xl hover:bg-[#e02020] hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all"
+                className="w-full bg-[#f59e0b] text-white font-bold text-sm px-4 py-3 rounded-xl hover:bg-[#d97706] hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all min-h-[44px]"
               >
                 Subscribe to Newsletter
               </button>

@@ -364,7 +364,7 @@ const FullBleedStatement = ({ num, eyebrow, big, red, body, align }) => {
       className={`relative max-w-7xl mx-auto px-6 md:px-12 py-16 md:py-24 border-b border-white/[0.06] flex flex-col ${isRight ? 'md:items-end md:text-right' : 'md:items-start'}`}
     >
       {/* Big watermark number */}
-      <span className="absolute top-1/2 -translate-y-1/2 right-8 text-[8rem] md:text-[14rem] font-black text-white/[0.025] leading-none select-none pointer-events-none">
+      <span className="absolute top-1/2 -translate-y-1/2 right-8 text-[5rem] sm:text-[8rem] md:text-[14rem] font-black text-white/[0.025] leading-none select-none pointer-events-none">
         {num}
       </span>
 
