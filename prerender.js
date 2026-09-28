@@ -6,18 +6,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const toAbsolute = (p) => path.resolve(__dirname, p)
 
 async function prerender() {
-  console.log('Starting prerendering...')
+  console.log('Starting prerendering for Skills Hub & Agency routes...')
   try {
     const template = fs.readFileSync(toAbsolute('dist/index.html'), 'utf-8')
     const { render } = await import('./dist-ssr/entry-server.js')
     
-    const url = '/'
-    const appHtml = render(url)
+    // Prerender Home (/)
+    const homeHtml = render('/')
+    const finalHomeHtml = template.replace(`<!--app-html-->`, homeHtml)
+    fs.writeFileSync(toAbsolute('dist/index.html'), finalHomeHtml)
+    console.log('Pre-rendered dist/index.html (Skills Hub) successfully.')
     
-    const html = template.replace(`<!--app-html-->`, appHtml)
-    fs.writeFileSync(toAbsolute('dist/index.html'), html)
-    console.log('Pre-rendered index.html successfully.')
+    // Prerender Agency (/agency)
+    const agencyHtml = render('/agency')
+    const finalAgencyHtml = template.replace(`<!--app-html-->`, agencyHtml)
+    const agencyDir = toAbsolute('dist/agency')
+    if (!fs.existsSync(agencyDir)) {
+      fs.mkdirSync(agencyDir, { recursive: true })
+    }
+    fs.writeFileSync(path.join(agencyDir, 'index.html'), finalAgencyHtml)
+    console.log('Pre-rendered dist/agency/index.html (Agency Services) successfully.')
     
+    // Generate Sitemap
     const date = new Date().toISOString().split('T')[0]
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -26,6 +36,12 @@ async function prerender() {
     <lastmod>${date}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://hub.naturexpress.in/agency</loc>
+    <lastmod>${date}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>`
     fs.writeFileSync(toAbsolute('dist/sitemap.xml'), sitemap)

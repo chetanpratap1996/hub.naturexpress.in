@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 /* ─── Social Icons ─── */
 const LinkedInIcon = () => (
@@ -32,36 +33,6 @@ const socialLinks = [
   { icon: <WhatsAppIcon />,  href: 'https://wa.me/918077170715',            label: 'WhatsApp' },
 ];
 
-const navCols = [
-  {
-    title: 'Services',
-    links: [
-      { label: 'Web & App Dev',    href: '/#services' },
-      { label: 'Digital Marketing', href: '/#services' },
-      { label: 'AI Automation',     href: '/#services' },
-      { label: 'YouTube Growth',    href: '/#services' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About Us',    href: '/#about' },
-      { label: 'Portfolio',   href: '/#portfolio' },
-      { label: 'Our Process', href: '/#services' },
-      { label: 'Contact',     href: '/#contact' },
-    ],
-  },
-  {
-    title: 'Contact',
-    links: [
-      { label: '+91 8077170715',                href: 'https://wa.me/918077170715' },
-      { label: 'chetan.pratap@naturexpress.in', href: 'mailto:chetan.pratap@naturexpress.in' },
-      { label: 'hub.naturexpress.in',           href: 'https://hub.naturexpress.in' },
-      { label: 'Worldwide Available',           href: '#' },
-    ],
-  },
-];
-
 const Footer = () => {
   const year = new Date().getFullYear();
 
@@ -84,17 +55,8 @@ const Footer = () => {
             </div>
 
             <p className="text-gray-500 text-sm font-medium leading-relaxed max-w-xs">
-              A precision-focused digital agency building enterprise-grade web apps, AI automation, and growth systems that scale brands from zero to industry leader.
+              Empowering students and job seekers with live company work sprints, active practitioner mentorship, and verified proof of work.
             </p>
-
-            {/* Availability */}
-            <div className="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 rounded-full px-4 py-2 w-fit">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-              </span>
-              <span className="text-green-400 text-xs font-bold">Accepting New Clients</span>
-            </div>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
@@ -115,54 +77,53 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Nav Columns */}
-          {navCols.map((col, i) => (
-            <div key={i} className="flex flex-col gap-4">
-              <p className="text-white font-black text-sm tracking-widest uppercase">{col.title}</p>
-              <div className="w-6 h-[1px] bg-[#f59e0b]/60" />
-              <ul className="flex flex-col gap-3">
-                {col.links.map((link, j) => (
-                  <li key={j}>
-                    <a
-                      href={link.href}
-                      className="text-gray-500 text-sm font-medium hover:text-white transition-colors duration-200 truncate block py-1"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          {/* Newsletter Column */}
+          {/* Column 1: Skills Hub */}
           <div className="flex flex-col gap-4">
-            <p className="text-white font-black text-sm tracking-widest uppercase">Stay Updated</p>
+            <p className="text-white font-black text-sm tracking-widest uppercase">Skills Hub</p>
             <div className="w-6 h-[1px] bg-[#f59e0b]/60" />
-            <p className="text-gray-500 text-sm font-medium leading-relaxed mb-2">
-              Get the latest insights on digital growth, AI automation, and web engineering. No spam.
-            </p>
-            <form className="flex flex-col gap-3" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative">
-                <input 
-                  type="email" 
-                  placeholder="Your email address" 
-                  className="w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-[#f59e0b]/50 focus:bg-white/[0.08] transition-all"
-                  required
-                />
-              </div>
-              <button 
-                type="submit" 
-                className="w-full bg-[#f59e0b] text-white font-bold text-sm px-4 py-3 rounded-xl hover:bg-[#d97706] hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] transition-all min-h-[44px]"
-              >
-                Subscribe to Newsletter
-              </button>
-            </form>
+            <ul className="flex flex-col gap-2.5 text-sm text-gray-500 font-medium">
+              <li><Link to="/#practitioners" className="hover:text-white transition-colors">Active Practitioners</Link></li>
+              <li><Link to="/#tracks" className="hover:text-white transition-colors">Sprint Tracks</Link></li>
+              <li><Link to="/#assessment" className="hover:text-white transition-colors">Resume & Skill Audit</Link></li>
+              <li><Link to="/#proof" className="hover:text-white transition-colors">Live App Proofs</Link></li>
+            </ul>
           </div>
+
+          {/* Column 2: Legal & Merchant Policy */}
+          <div className="flex flex-col gap-4">
+            <p className="text-white font-black text-sm tracking-widest uppercase">Legal & Policy</p>
+            <div className="w-6 h-[1px] bg-[#f59e0b]/60" />
+            <ul className="flex flex-col gap-2.5 text-sm text-gray-500 font-medium">
+              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/refund-policy" className="hover:text-white transition-colors">Cancellation & Refund Policy</Link></li>
+              <li><Link to="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+            </ul>
+          </div>
+
+          {/* Contact & Support */}
+          <div className="flex flex-col gap-4">
+            <p className="text-white font-black text-sm tracking-widest uppercase">Registered Office</p>
+            <div className="w-6 h-[1px] bg-[#f59e0b]/60" />
+            <p className="text-gray-400 text-xs font-medium leading-relaxed">
+              NatureXpress Skills Hub<br />
+              Vijay Nagar, Indore, MP - 452010<br />
+              support@naturexpress.in
+            </p>
+            <a 
+              href="https://wa.me/918077170715"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-green-400 font-bold text-xs bg-green-500/10 border border-green-500/20 px-3 py-2 rounded-xl w-fit hover:bg-green-500/20 transition-all"
+            >
+              <span>Chat on WhatsApp (+91 8077170715)</span>
+            </a>
+          </div>
+
         </div>
       </div>
 
-      {/* Big Brand Wordmark */}
+      {/* Big Wordmark */}
       <div className="relative w-full flex justify-center items-center py-12 md:py-16 overflow-hidden select-none pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-transparent to-transparent" />
         <h2
@@ -176,16 +137,15 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-white/[0.05]">
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-
           <p className="text-gray-600 text-xs font-medium">
             © {year} NatureXpress Hub. All rights reserved. Founded by{' '}
             <span className="text-gray-400 font-bold">Chetan Pratap Singh</span>.
           </p>
-
-          <div className="flex items-center gap-6">
-            <a href="/privacy" className="text-gray-600 text-xs font-medium hover:text-gray-400 transition-colors">Privacy Policy</a>
-            <a href="/terms"   className="text-gray-600 text-xs font-medium hover:text-gray-400 transition-colors">Terms of Service</a>
-            <span className="text-gray-700 text-xs">hub.naturexpress.in</span>
+          <div className="flex items-center gap-4 text-gray-600 text-xs">
+            <Link to="/terms" className="hover:text-gray-400 transition-colors">Terms</Link>
+            <Link to="/privacy" className="hover:text-gray-400 transition-colors">Privacy</Link>
+            <Link to="/refund-policy" className="hover:text-gray-400 transition-colors">Refund Policy</Link>
+            <Link to="/contact" className="hover:text-gray-400 transition-colors">Contact</Link>
           </div>
         </div>
       </div>
@@ -194,4 +154,3 @@ const Footer = () => {
 };
 
 export default Footer;
-

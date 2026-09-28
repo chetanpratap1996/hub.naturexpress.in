@@ -2,186 +2,107 @@
 
 @theme {
   --animate-float: float 6s ease-in-out infinite;
-
   @keyframes float {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    50% { transform: translateY(-14px); }
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: #000;
-  color: #fff;
+  background-color: #ffffff;
+  color: #0f172a;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── AOS Custom ─────────────────────────────────────────── */
-[data-aos="drop-bounce"] {
-  opacity: 0;
-}
-[data-aos="drop-bounce"].aos-animate {
-  animation: dropBounce 1.2s cubic-bezier(0.28, 0.84, 0.42, 1) forwards;
-}
+/* ── Scrollbar ─────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f8fafc; }
+::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
 
-@keyframes dropBounce {
-  0%   { transform: translateY(-300px); opacity: 0; }
-  50%  { transform: translateY(0);      opacity: 1; }
-  65%  { transform: translateY(-40px);  opacity: 1; }
-  80%  { transform: translateY(0);      opacity: 1; }
-  90%  { transform: translateY(-15px);  opacity: 1; }
-  100% { transform: translateY(0);      opacity: 1; }
-}
+/* ── Selection ─────────────────────────────────── */
+::selection { background: rgba(99,102,241,0.15); color: #1e1b4b; }
 
-/* ── Marquee ─────────────────────────────────────────────── */
+/* ── Scroll anchor ─────────────────────────────── */
+section[id] { scroll-margin-top: 90px; }
+
+/* ── Marquee ───────────────────────────────────── */
 @keyframes marquee-left {
   0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+.marquee-track { animation: marquee-left 28s linear infinite; }
 
-@keyframes marquee-right {
-  0%   { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
-}
-
-.marquee-left  { animation: marquee-left  25s linear infinite; }
-.marquee-right { animation: marquee-right 30s linear infinite; }
-
-/* ── Shimmer button sweep ─────────────────────────────────── */
-@keyframes shimmer-sweep {
-  0%   { transform: translateX(-200%); }
-  100% { transform: translateX(200%); }
-}
-
-.btn-shimmer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  animation: shimmer-sweep 2.5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* ── Glow pulse ────────────────────────────────────────────── */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 0px rgba(245, 158, 11, 0); }
-  50%       { box-shadow: 0 0 30px rgba(245, 158, 11, 0.5); }
-}
-
-.glow-pulse { animation: glow-pulse 2.5s ease-in-out infinite; }
-
-/* ── WhatsApp pulse ring ───────────────────────────────────── */
+/* ── WhatsApp pulse ────────────────────────────── */
 @keyframes wa-ring {
-  0%   { transform: scale(1);   opacity: 0.7; }
+  0%   { transform: scale(1);   opacity: 0.6; }
   100% { transform: scale(2.2); opacity: 0; }
 }
-
 .wa-ring::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: 9999px;
   border: 2px solid #25D366;
-  animation: wa-ring 2s ease-out infinite;
+  animation: wa-ring 2.2s ease-out infinite;
 }
 
-/* ── Card 3D hover ────────────────────────────────────── */
-.card-hover {
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
-/* Only apply hover lift on devices that actually support hover (not mobile touch) */
-@media (hover: hover) and (pointer: fine) {
-  .card-hover:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 30px 70px rgba(245, 158, 11, 0.12), 0 15px 30px rgba(0,0,0,0.4);
-  }
+/* ── Box reveal ────────────────────────────────── */
+@keyframes box-reveal-slide {
+  0%   { left: 0; }
+  100% { left: 100%; }
 }
 
-/* ── Timeline connector ────────────────────────────────────── */
-.timeline-line {
-  background: linear-gradient(to bottom, transparent, rgba(245,158,11,0.4), transparent);
+/* ── Gradient text ─────────────────────────────── */
+.text-gradient-indigo {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-
-/* ── Text gradient ─────────────────────────────────────────── */
-.text-gradient-orange {
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+.text-gradient-aurora {
+  background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #06b6d4 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ── Glassmorphism ─────────────────────────────────────────── */
-.glass {
-  background: rgba(10, 10, 10, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* ── Noise texture overlay ─────────────────────────────────── */
-.noise::before {
+/* ── Shimmer button ────────────────────────────── */
+.btn-shimmer { position: relative; overflow: hidden; }
+.btn-shimmer::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.35) 50%, transparent 100%);
+  transform: translateX(-100%) skewX(-12deg);
+  transition: none;
+}
+.btn-shimmer:hover::after {
+  transform: translateX(200%) skewX(-12deg);
+  transition: transform 0.65s ease;
 }
 
-/* ── Scrollbar ─────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #f59e0b; border-radius: 2px; }
-
-/* ── Selection ───────────────────────────────────────────────── */
-::selection {
-  background: rgba(245, 158, 11, 0.3);
-  color: white;
+/* ── Card hover lift ───────────────────────────── */
+.card-lift {
+  transition: transform 0.28s cubic-bezier(0.16,1,0.3,1),
+              box-shadow 0.28s cubic-bezier(0.16,1,0.3,1);
+}
+.card-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px -12px rgba(99,102,241,0.15), 0 8px 20px -6px rgba(0,0,0,0.06);
 }
 
-/* ── Scroll anchor offset (for fixed navbar) ───────────────────── */
-section[id] {
-  scroll-margin-top: 80px;
-}
-
-/* ── iOS Safe-Area Insets (notch support) ───────────────────── */
-.safe-top    { padding-top:    env(safe-area-inset-top);    }
-.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
-
-/* ── Glassmorphism with @supports fallback ──────────────────── */
-@supports not (backdrop-filter: blur(1px)) {
-  .glass {
-    background: rgba(5, 5, 5, 0.95);
-  }
-}
-
-/* ── Accessibility: Reduced Motion ─────────────────────────── */
+/* ── Reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  .marquee-left,
-  .marquee-right {
-    animation: none;
-  }
-  .wa-ring::before {
-    animation: none;
-  }
-  .glow-pulse {
-    animation: none;
-  }
-  .btn-shimmer::after {
-    animation: none;
   }
 }

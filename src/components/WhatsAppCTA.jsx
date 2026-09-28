@@ -1,9 +1,14 @@
 import { motion } from 'framer-motion';
+import { trackWhatsAppContact } from '../lib/analytics';
 
 const WhatsAppCTA = () => {
   const whatsappNumber = '918077170715';
   const message = "Hi Chetan, I found NatureXpress Hub and I'd like to discuss a project with you!";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  const handleWhatsAppClick = () => {
+    trackWhatsAppContact('Footer_CTA');
+  };
 
   return (
     <section className="bg-[#030303] py-24 px-6 md:px-12 relative overflow-hidden border-t border-white/[0.04]">
@@ -75,6 +80,7 @@ const WhatsAppCTA = () => {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={handleWhatsAppClick}
                 whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(37,211,102,0.5)' }}
                 whileTap={{ scale: 0.97 }}
                 className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-[#25D366] text-white font-black text-base hover:bg-[#20bd5a] transition-all duration-300"
