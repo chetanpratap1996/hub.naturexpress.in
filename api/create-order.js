@@ -1,6 +1,7 @@
 import Razorpay from 'razorpay';
 
 export default async function handler(req, res) {
+  // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -36,6 +37,7 @@ export default async function handler(req, res) {
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
 
     if (!keyId || !keySecret) {
+      console.warn('⚠️ Razorpay credentials missing. Using dev mock order fallback.');
       return res.status(200).json({
         success: true,
         isMock: true,
@@ -71,11 +73,13 @@ export default async function handler(req, res) {
     } catch (razorpayErr) {
       console.error('Razorpay API error:', razorpayErr);
 
+      // If key is invalid or unauthorized in test environment, fallback gracefully to mock order for testing UI
       if (
         razorpayErr.statusCode === 401 ||
         (razorpayErr.error && razorpayErr.error.code === 'BAD_REQUEST_ERROR') ||
         razorpayErr.message?.includes('Authentication')
       ) {
+        console.warn('⚠️ Razorpay auth failed with provided credentials. Falling back to test order fallback mode.');
         return res.status(200).json({
           success: true,
           isMock: true,
@@ -92,6 +96,10 @@ export default async function handler(req, res) {
       });
     }
   } catch (error) {
-    return res.status(500).json({ success: false, error: error.message });
+    console.error('Error in create-order endpoint:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message || 'Internal server error'
+    });
   }
 }

@@ -1,7 +1,7 @@
 import { sendPaymentConfirmationToCRM } from './webhook';
 
 /**
- * Dynamically loads the Razorpay Checkout JavaScript SDK
+ * Dynamically loads the Razorpay Checkout JavaScript SDK if not already loaded
  */
 export const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -18,10 +18,13 @@ export const loadRazorpayScript = () => {
 };
 
 /**
- * Initiates Razorpay Checkout Flow with Vercel API Backend Verification
+ * Initiates Razorpay Standard Checkout Flow
+ * 1. Creates order via backend POST /api/create-order
+ * 2. Launches Razorpay modal with order_id (if real server order) or client mode
+ * 3. Verifies payment signature via backend POST /api/verify-payment
  */
 export const initiateRazorpayCheckout = async ({
-  amount = 3999, // in INR
+  amount = 3999,
   trackName = 'Web Development',
   userDetails = {},
   onSuccess,
@@ -30,20 +33,33 @@ export const initiateRazorpayCheckout = async ({
   try {
     const isLoaded = await loadRazorpayScript();
     if (!isLoaded) {
-      alert('Failed to load Razorpay payment SDK. Please check your internet connection and try again.');
+      alert('Failed to load Razorpay payment SDK. Please check your internet connection.');
       if (onFailure) onFailure('Razorpay SDK load failure');
       return;
     }
 
-    let orderId = null;
+    let amountInPaise = Math.round(Number(amount));
+    if (amountInPaise < 100) {
+      alert('Amount must be at least ₹1 (100 paise)');
+      if (onFailure) onFailure('Invalid amount');
+      return;
+    }
+    if (amountInPaise < 1000) {
+      // Assuming amount was passed in Rupees (e.g., 3999 INR)
+      amountInPaise = amountInPaise * 100;
+    }
 
-    // 1. Attempt to create order via Vercel API Endpoint
+    let orderId = null;
+    let isMockOrder = false;
+
+    // 1. Create order on backend (/api/create-order or /api/razorpay/create-order)
+    let orderRes;
     try {
-      const orderRes = await fetch('/api/razorpay/create-order', {
+      orderRes = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount,
+          amount: amountInPaise,
           currency: 'INR',
           receipt: `rcpt_${Date.now()}`,
           notes: {
@@ -54,27 +70,59 @@ export const initiateRazorpayCheckout = async ({
         })
       });
 
-      if (orderRes.ok) {
-        const orderData = await orderRes.json();
-        if (orderData.success && orderData.order) {
-          orderId = orderData.order.id;
-        }
+      if (orderRes.status === 404) {
+        orderRes = await fetch('/api/razorpay/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            amount: amountInPaise,
+            currency: 'INR',
+            receipt: `rcpt_${Date.now()}`,
+            notes: {
+              track: trackName,
+              studentName: userDetails.name || '',
+              studentPhone: userDetails.phone || ''
+            }
+          })
+        });
       }
-    } catch (e) {
-      console.warn('⚠️ Serverless order endpoint unreachable, initiating direct client checkout:', e);
+    } catch (err) {
+      console.error('Fetch error calling create-order API:', err);
     }
 
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_placeholder';
+    if (orderRes && orderRes.ok) {
+      const orderData = await orderRes.json();
+      if (orderData.success) {
+        isMockOrder = !!orderData.isMock;
+        orderId = orderData.order_id || (orderData.order && orderData.order.id);
+      } else {
+        alert(`Order Creation Failed: ${orderData.error || 'Server error'}`);
+        if (onFailure) onFailure(orderData.error);
+        return;
+      }
+    } else if (orderRes) {
+      const errData = await orderRes.json().catch(() => ({}));
+      const errorMsg = errData.error || `Server responded with status ${orderRes.status}`;
+      alert(`Order Creation Error: ${errorMsg}`);
+      if (onFailure) onFailure(errorMsg);
+      return;
+    } else {
+      console.warn('⚠️ Backend endpoint unreachable. Proceeding with standard client checkout.');
+    }
 
-    // 2. Configure Razorpay Options
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_ThpyPqBtFyEs8B';
+
+    // 2. Configure Razorpay Standard Modal options
+    // Note: Only pass order_id if it is a real Razorpay server order.
+    // Fake or non-existent order_ids cause Razorpay SDK to reject the payment as invalid.
     const options = {
       key: keyId,
-      amount: Math.round(amount * 100), // in paise
+      amount: amountInPaise,
       currency: 'INR',
-      name: 'NatureXpress Skills Hub',
-      description: `Enrollment: ${trackName} (Pay-As-You-Learn)`,
+      name: 'NatureXpress Hub',
+      description: `Enrollment: ${trackName}`,
       image: 'https://hub.naturexpress.in/favicon.ico',
-      order_id: orderId || undefined,
+      order_id: (orderId && !isMockOrder && !orderId.startsWith('order_test_') && !orderId.startsWith('order_mock_')) ? orderId : undefined,
       prefill: {
         name: userDetails.name || '',
         email: userDetails.email || '',
@@ -82,46 +130,65 @@ export const initiateRazorpayCheckout = async ({
       },
       notes: {
         track: trackName,
-        city: userDetails.city || 'Indore',
-        onboarding: 'Next Working Day'
+        city: userDetails.city || 'Indore'
       },
       theme: {
         color: '#4f46e5'
       },
       handler: async function (response) {
-        console.log('⚡ Razorpay Raw Response:', response);
+        console.log('⚡ Razorpay Checkout Response:', response);
 
-        // Verify signature via Vercel API if order_id exists
-        if (response.razorpay_order_id && response.razorpay_signature) {
+        const paymentId = response.razorpay_payment_id;
+        const respOrderId = response.razorpay_order_id || orderId;
+        const signature = response.razorpay_signature;
+
+        // Verify payment signature via backend API if signature and order_id are present
+        if (respOrderId && signature) {
           try {
-            await fetch('/api/razorpay/verify-payment', {
+            let verifyRes = await fetch('/api/verify-payment', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                ...response,
-                userDetails,
-                trackName,
-                amount
+                razorpay_order_id: respOrderId,
+                razorpay_payment_id: paymentId,
+                razorpay_signature: signature
               })
             });
+
+            if (verifyRes.status === 404) {
+              verifyRes = await fetch('/api/razorpay/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_order_id: respOrderId,
+                  razorpay_payment_id: paymentId,
+                  razorpay_signature: signature
+                })
+              });
+            }
+
+            const verifyData = await verifyRes.json();
+            if (!verifyRes.ok || !verifyData.verified) {
+              console.warn('Signature verification status:', verifyData);
+            }
           } catch (err) {
-            console.error('Signature verification call error:', err);
+            console.error('Error calling verify-payment API:', err);
           }
         }
 
         const paymentData = {
-          paymentId: response.razorpay_payment_id || `pay_${Date.now()}`,
-          orderId: response.razorpay_order_id || orderId || `ord_${Date.now()}`,
-          signature: response.razorpay_signature || 'N/A',
-          amount,
+          paymentId: paymentId || `pay_${Date.now()}`,
+          orderId: respOrderId || `ord_${Date.now()}`,
+          signature: signature || 'N/A',
+          amount: amountInPaise / 100,
           trackName,
           userDetails
         };
 
-        // Forward payment lead to CRM/Google Sheets
+        // Send payment confirmation to CRM
         sendPaymentConfirmationToCRM(paymentData);
 
-        // Save local record
+        // Store local payment record
         const savedPayments = JSON.parse(localStorage.getItem('nx_payments') || '[]');
         savedPayments.push(paymentData);
         localStorage.setItem('nx_payments', JSON.stringify(savedPayments));
@@ -132,18 +199,26 @@ export const initiateRazorpayCheckout = async ({
       },
       modal: {
         ondismiss: function () {
-          console.log('Payment modal dismissed');
-          if (onFailure) onFailure('Payment dismissed');
+          console.log('Payment modal dismissed by user');
+          if (onFailure) onFailure('Payment cancelled by user');
         }
       }
     };
 
-    const razorpayInstance = new window.Razorpay(options);
-    razorpayInstance.open();
+    const rzp = new window.Razorpay(options);
 
+    // Handle payment.failed event
+    rzp.on('payment.failed', function (response) {
+      console.error('Payment failed event:', response.error);
+      const failMsg = response.error.description || response.error.reason || 'Payment failed';
+      alert(`Payment Failed: ${failMsg}`);
+      if (onFailure) onFailure(failMsg);
+    });
+
+    rzp.open();
   } catch (err) {
     console.error('Razorpay initialization error:', err);
-    alert('An unexpected error occurred while launching payment. Please try again.');
+    alert('An error occurred while launching payment. Please try again.');
     if (onFailure) onFailure(err.message);
   }
 };

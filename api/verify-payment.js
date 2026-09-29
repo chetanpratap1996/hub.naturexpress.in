@@ -49,6 +49,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // Dev test fallback verification
     if (
       targetOrderId.startsWith('order_test_') ||
       targetOrderId.startsWith('order_mock_') ||
@@ -64,11 +65,13 @@ export default async function handler(req, res) {
       });
     }
 
+    // Generate expected HMAC-SHA256 signature
     const generatedSignature = crypto
       .createHmac('sha256', keySecret)
       .update(`${targetOrderId}|${targetPaymentId}`)
       .digest('hex');
 
+    // Compare signatures
     if (generatedSignature !== targetSignature) {
       console.error('❌ Razorpay Signature Verification Mismatch:', {
         expected: generatedSignature,
@@ -80,6 +83,11 @@ export default async function handler(req, res) {
         error: 'Payment signature mismatch'
       });
     }
+
+    console.log('✅ Razorpay Payment verified successfully:', {
+      orderId: targetOrderId,
+      paymentId: targetPaymentId
+    });
 
     return res.status(200).json({
       success: true,
