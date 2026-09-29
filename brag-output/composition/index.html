@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>NatureXpress Hub — Launch Video</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: #0f172a;
+        font-family: 'Inter', sans-serif;
+        color: #f8fafc;
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        background: radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.18), transparent 45%),
+                    radial-gradient(circle at 20% 80%, rgba(147, 51, 234, 0.15), transparent 40%),
+                    #0f172a;
+      }
+      .grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        background-size: 64px 64px;
+        pointer-events: none;
+      }
+
+      /* Scene Container */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px;
+        opacity: 0;
+      }
+
+      /* Scene 1: Hook */
+      .kicker {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 24px;
+        border-radius: 9999px;
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 16px;
+        font-weight: 800;
+        color: #e2e8f0;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 32px;
+      }
+      .pulse-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #10b981;
+        box-shadow: 0 0 12px #10b981;
+      }
+      .headline-big {
+        font-size: 68px;
+        font-weight: 900;
+        text-align: center;
+        max-width: 1400px;
+        line-height: 1.15;
+        letter-spacing: -1.5px;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #fb7185 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      /* Scene 2: Audit Engine Mockup */
+      .card-box {
+        width: 1000px;
+        background: rgba(15, 23, 42, 0.85);
+        border: 2px solid rgba(99, 102, 241, 0.4);
+        border-radius: 24px;
+        padding: 48px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.2);
+        backdrop-filter: blur(16px);
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-b: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 24px;
+        margin-bottom: 32px;
+      }
+      .card-title {
+        font-size: 28px;
+        font-weight: 800;
+        color: #f8fafc;
+      }
+      .score-display {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 96px;
+        font-weight: 900;
+        color: #10b981;
+        text-align: center;
+        margin: 20px 0;
+        text-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+      }
+      .status-pill {
+        display: inline-block;
+        padding: 8px 24px;
+        border-radius: 9999px;
+        background: rgba(16, 185, 129, 0.15);
+        border: 1px solid rgba(16, 185, 129, 0.4);
+        color: #34d399;
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 1px;
+      }
+
+      /* Scene 3: Tech Stack & Sprint */
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        width: 1300px;
+      }
+      .feature-card {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 40px;
+        text-align: left;
+      }
+      .feature-icon {
+        font-size: 40px;
+        margin-bottom: 20px;
+      }
+      .feature-title {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 12px;
+        color: #ffffff;
+      }
+      .feature-desc {
+        font-size: 16px;
+        color: #94a3b8;
+        line-height: 1.5;
+      }
+
+      /* Scene 4: Outro */
+      .brand-title {
+        font-size: 80px;
+        font-weight: 900;
+        letter-spacing: -2px;
+        margin-bottom: 16px;
+      }
+      .brand-tagline {
+        font-size: 32px;
+        color: #94a3b8;
+        margin-bottom: 40px;
+        font-weight: 600;
+      }
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px 48px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 800;
+        box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="20" data-width="1920" data-height="1080">
+      <div class="grid-bg"></div>
+
+      <!-- SCENE 1: THE HOOK -->
+      <div id="scene1" class="scene">
+        <div class="kicker">
+          <span class="pulse-dot"></span>
+          <span>Special Report • 2026 Tech & Career Market</span>
+        </div>
+        <h1 class="headline-big">
+          210,000+ Tech Roles & Clients Exist Right Now.<br/>
+          <span class="gradient-text">95% of Applicants Get Auto-Rejected.</span>
+        </h1>
+      </div>
+
+      <!-- SCENE 2: THE AI AUDIT -->
+      <div id="scene2" class="scene">
+        <div class="card-box">
+          <div class="card-header">
+            <span class="card-title">Candidate Employability Diagnostic Engine</span>
+            <span class="status-pill">LIVE SCAN</span>
+          </div>
+          <div style="text-align: center;">
+            <p style="font-size: 20px; color: #94a3b8;">Resume & Portfolio Rank Analysis</p>
+            <div id="scoreNumber" class="score-display">98/100</div>
+            <div class="status-pill">HIRE-READY • TOP 1% CANDIDATE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: SOLUTION BRIDGE -->
+      <div id="scene3" class="scene">
+        <h2 style="font-size: 48px; font-weight: 900; margin-bottom: 48px; text-align: center;">
+          The Enterprise Growth & Career Engine
+        </h2>
+        <div class="grid-3">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <div class="feature-title">AI Resume Audit</div>
+            <div class="feature-desc">Dual-mode scoring engine detecting recruiter blockers instantly.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🚀</div>
+            <div class="feature-title">Daily Sprint Engine</div>
+            <div class="feature-desc">Ship production-grade web apps with React 19, Vite 8 & Tailwind 4.</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💼</div>
+            <div class="feature-title">B2B Agency Hub</div>
+            <div class="feature-desc">Enterprise software development & high-converting growth systems.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: OUTRO -->
+      <div id="scene4" class="scene">
+        <h1 class="brand-title">NatureXpress Hub</h1>
+        <p class="brand-tagline">Enterprise Digital Agency — Web, AI & Career Growth</p>
+        <div class="cta-btn">
+          <span>Start Your Audit at hub.naturexpress.in</span>
+          <span>→</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // Scene 1: 0s to 4.5s
+      tl.fromTo("#scene1", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.6 }, 0);
+      tl.to("#scene1", { opacity: 0, scale: 1.05, duration: 0.5 }, 4.0);
+
+      // Scene 2: 4.5s to 9.5s
+      tl.fromTo("#scene2", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.6 }, 4.5);
+      tl.to("#scene2", { opacity: 0, y: -40, duration: 0.5 }, 9.0);
+
+      // Scene 3: 9.5s to 14.5s
+      tl.fromTo("#scene3", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.6 }, 9.5);
+      tl.to("#scene3", { opacity: 0, scale: 1.05, duration: 0.5 }, 14.0);
+
+      // Scene 4: 14.5s to 20s
+      tl.fromTo("#scene4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6 }, 14.5);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
