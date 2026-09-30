@@ -86,11 +86,12 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Organization",
+          "@type": "EducationalOrganization",
           "@id": "https://hub.naturexpress.in/#organization",
           "name": "NatureXpress Hub",
           "url": "https://hub.naturexpress.in/",
-          "logo": "https://hub.naturexpress.in/og-image.png",
+          "logo": "https://hub.naturexpress.in/favicon.ico",
+          "description": "Live 2 Hours/Day Industry Practitioner Sprints & Career Placement Lab in Web Development, Digital Marketing, and UI/UX Design.",
           "founder": {
             "@type": "Person",
             "name": "Chetan Pratap Singh"
@@ -98,26 +99,38 @@
           "contactPoint": {
             "@type": "ContactPoint",
             "contactType": "customer service",
-            "availableLanguage": ["English", "Hindi"]
+            "availableLanguage": ["English", "Hindi"],
+            "telephone": "+91-8077170715"
           }
         },
         {
-          "@type": "LocalBusiness",
-          "@id": "https://hub.naturexpress.in/#localbusiness",
-          "name": "NatureXpress Hub",
-          "url": "https://hub.naturexpress.in/",
-          "image": "https://hub.naturexpress.in/og-image.png",
-          "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "IN"
-          },
-          "priceRange": "$$$"
-        },
-        {
-          "@type": "Service",
-          "name": "Enterprise Web Development & AI Automation",
+          "@type": "Course",
+          "@id": "https://hub.naturexpress.in/#web-sprint",
+          "name": "Web & Software Engineering Live Practitioner Sprint",
+          "description": "Work 2 hours daily alongside IT engineering leads to build 3+ live full-stack production web apps deployed on Vercel/AWS.",
           "provider": {
             "@id": "https://hub.naturexpress.in/#organization"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "3999.00",
+            "priceCurrency": "INR",
+            "category": "Monthly Subscription"
+          }
+        },
+        {
+          "@type": "Course",
+          "@id": "https://hub.naturexpress.in/#marketing-sprint",
+          "name": "Digital Growth & Performance Marketing Sprint",
+          "description": "Manage live Meta & Google ad campaigns, conversion funnels, pixel tracking, and client pitch decks.",
+          "provider": {
+            "@id": "https://hub.naturexpress.in/#organization"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "3999.00",
+            "priceCurrency": "INR",
+            "category": "Monthly Subscription"
           }
         },
         {
@@ -128,6 +141,18 @@
               "position": 1,
               "name": "Home",
               "item": "https://hub.naturexpress.in/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "B2B Agency",
+              "item": "https://hub.naturexpress.in/agency"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Sales Admin",
+              "item": "https://hub.naturexpress.in/admin"
             }
           ]
         }

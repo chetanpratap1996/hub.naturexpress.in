@@ -42,7 +42,7 @@ const HeroSection = () => {
   };
 
   const scrollToAudit = () => {
-    const el = document.getElementById('live-audit');
+    const el = document.getElementById('assessment') || document.getElementById('live-audit');
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 

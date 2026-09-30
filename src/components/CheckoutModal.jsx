@@ -19,7 +19,8 @@ const CheckoutModal = ({ isOpen, onClose, initialTrack = 'web', isScholarshipTie
   const trackLabels = {
     web: 'Web & App Development Sprint (with IT Team)',
     marketing: 'Digital Growth & Ads Sprint (with Marketing Head)',
-    design: 'Graphic & UI/UX Design Sprint (with Product Lead)'
+    design: 'Graphic & UI/UX Design Sprint (with Product Lead)',
+    hr: 'Career & HR Placement Sprint (with HR Lead)'
   };
 
   const handleSubmit = (e) => {
@@ -93,6 +94,7 @@ const CheckoutModal = ({ isOpen, onClose, initialTrack = 'web', isScholarshipTie
                 <option value="web">💻 Web & App Dev (with IT Team + HR)</option>
                 <option value="marketing">📈 Digital Growth & Ads (with Marketing Head + HR)</option>
                 <option value="design">🎨 Graphic Design & UI/UX (with UI Lead + HR)</option>
+                <option value="hr">👔 Career & HR Placement Sprint (with HR Lead)</option>
               </select>
             </div>
 

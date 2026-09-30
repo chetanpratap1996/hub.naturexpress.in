@@ -92,13 +92,13 @@ const CandidateEmployabilityAudit = ({ onOpenScholarship }) => {
       // 1. Extract text & links from PDF/Word
       const basicParse = await parseResumeFile(file);
       
-      // 2. Perform Deep Technical & Employability Analysis
-      const analysis = await analyzeResumeContent(basicParse.summary + ' ' + (basicParse.urlsFound.join(' ')) + ' ' + (basicParse.detectedSkills.join(' ')), file.name, domain);
-      
-      // Merge basic parsed URLs
-      if (basicParse.urlsFound && basicParse.urlsFound.length > 0) {
-        analysis.extractedUrls = [...new Set([...analysis.extractedUrls, ...basicParse.urlsFound])];
-      }
+      // 2. Perform Deep Technical & Employability Analysis — pass full parsed data object
+      const analysis = await analyzeResumeContent(
+        basicParse.rawText || basicParse.summary || '',
+        file.name,
+        domain,
+        basicParse  // full structured data: rawText, urlsFound, detectedSkills, companies, seniority, sections
+      );
 
       setDeepAnalysis(analysis);
     } catch (err) {
@@ -344,98 +344,191 @@ const CandidateEmployabilityAudit = ({ onOpenScholarship }) => {
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="p-6 md:p-8 rounded-3xl bg-slate-900 text-white border border-slate-800 text-left space-y-6 shadow-2xl relative overflow-hidden"
+                  className="rounded-3xl bg-slate-900 text-white border border-slate-800 text-left shadow-2xl relative overflow-hidden"
                 >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
-                    <div>
-                      <span className="text-[11px] font-mono font-bold text-emerald-400 uppercase tracking-widest block mb-1">
-                        OFFICIAL EMPLOYABILITY AUDIT REPORT
-                      </span>
-                      <h4 className="text-xl font-black text-white">{deepAnalysis.atsRating}</h4>
-                    </div>
+                  {/* ── Header ── */}
+                  <div className="p-6 md:p-8 pb-5 border-b border-slate-800">
+                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                      <div className="flex-1">
+                        <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-widest block mb-1">
+                          NatureXpress Hub · Official Employability Audit Report
+                        </span>
+                        <h4 className="text-xl font-black text-white leading-tight">{deepAnalysis.atsRating}</h4>
 
-                    <div className="bg-slate-950 border border-slate-800 px-4 py-2 rounded-2xl text-right">
-                      <span className="text-[10px] text-slate-400 font-mono block">Proof Score</span>
-                      <span className="text-2xl font-black text-indigo-400">{deepAnalysis.proofScore}/100</span>
-                    </div>
-                  </div>
-
-                  {/* Links Found & Skills Grid */}
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                      <h5 className="text-xs font-mono font-bold text-indigo-400 uppercase mb-2 flex items-center gap-1.5">
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Live Deployed Portfolios Detected:</span>
-                      </h5>
-                      {deepAnalysis.extractedUrls.length > 0 ? (
-                        <div className="flex flex-wrap gap-1.5">
-                          {deepAnalysis.extractedUrls.map((url, i) => (
-                            <span key={i} className="text-[10px] font-mono bg-indigo-950 text-indigo-300 border border-indigo-800 px-2.5 py-0.5 rounded">
-                              {url}
+                        {/* Candidate meta badges */}
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {deepAnalysis.candidateName && (
+                            <span className="text-[10px] font-mono font-bold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700">
+                              👤 {deepAnalysis.candidateName}
+                            </span>
+                          )}
+                          {deepAnalysis.seniority?.level && (
+                            <span className="text-[10px] font-mono font-bold bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-lg border border-indigo-800">
+                              🎯 {deepAnalysis.seniority.level} · ~{deepAnalysis.seniority.yearsEstimate} yrs
+                            </span>
+                          )}
+                          {deepAnalysis.companies?.slice(0, 2).map((co, i) => (
+                            <span key={i} className="text-[10px] font-mono bg-emerald-950 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-800">
+                              🏢 {co}
                             </span>
                           ))}
+                          <span className="text-[10px] font-mono font-bold bg-slate-800 text-slate-400 px-2.5 py-1 rounded-lg border border-slate-700 uppercase">
+                            {deepAnalysis.domain} Track
+                          </span>
                         </div>
-                      ) : (
-                        <p className="text-xs text-rose-400 font-mono">❌ 0 Live URLs found. High ATS rejection risk.</p>
-                      )}
+                      </div>
+
+                      <div className="bg-slate-950 border border-slate-800 px-5 py-3 rounded-2xl text-center shrink-0">
+                        <span className="text-[10px] text-slate-400 font-mono block mb-0.5">Proof Score</span>
+                        <span className={`text-3xl font-black ${deepAnalysis.proofScore >= 70 ? 'text-emerald-400' : deepAnalysis.proofScore >= 42 ? 'text-amber-400' : 'text-rose-400'}`}>
+                          {deepAnalysis.proofScore}
+                        </span>
+                        <span className="text-slate-500 font-bold text-sm">/100</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-6 md:p-8 space-y-6">
+
+                    {/* ── Pillar Score Breakdown ── */}
+                    {deepAnalysis.pillarDetails && (
+                      <div>
+                        <h5 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-3">
+                          AUDIT PILLAR BREAKDOWN (6 dimensions):
+                        </h5>
+                        <div className="space-y-2.5">
+                          {Object.entries(deepAnalysis.pillarDetails).map(([key, detail]) => {
+                            const pct = Math.round((detail.earned / detail.max) * 100);
+                            const barColor = pct >= 70 ? 'bg-emerald-500' : pct >= 40 ? 'bg-amber-500' : 'bg-rose-500';
+                            const pillarLabels = {
+                              liveUrls: 'Live Projects / Portfolio Links',
+                              tier1Skills: 'Core Domain Stack',
+                              tier2Skills: 'Backend / Depth / Metrics',
+                              githubSignal: 'GitHub / Portfolio Activity',
+                              companyXP: 'Work / Internship Experience',
+                              modernTools: 'Modern Tools & Workflow',
+                            };
+                            return (
+                              <div key={key}>
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-[10px] text-slate-400 font-mono">{pillarLabels[key] || key}</span>
+                                  <span className="text-[10px] font-bold font-mono text-slate-300">{detail.earned}/{detail.max}</span>
+                                </div>
+                                <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                  <div className={`h-full ${barColor} rounded-full transition-all`} style={{ width: `${pct}%` }} />
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* ── Links Found & Skills Grid ── */}
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+                        <h5 className="text-xs font-mono font-bold text-indigo-400 uppercase mb-2 flex items-center gap-1.5">
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>URLs Detected ({deepAnalysis.extractedUrls.length}):</span>
+                        </h5>
+                        {deepAnalysis.extractedUrls.length > 0 ? (
+                          <div className="flex flex-col gap-1.5">
+                            {deepAnalysis.extractedUrls.slice(0, 5).map((url, i) => (
+                              <span key={i} className="text-[10px] font-mono bg-indigo-950 text-indigo-300 border border-indigo-800 px-2.5 py-1 rounded-lg truncate block">
+                                🔗 {url.replace(/^https?:\/\//, '').slice(0, 55)}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-rose-400 font-mono leading-relaxed">❌ 0 live URLs found.<br />This is the #1 ATS rejection signal.</p>
+                        )}
+                      </div>
+
+                      <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
+                        <h5 className="text-xs font-mono font-bold text-emerald-400 uppercase mb-2 flex items-center gap-1.5">
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          <span>Skills Found ({deepAnalysis.detectedSkills.length}):</span>
+                        </h5>
+                        {deepAnalysis.detectedSkills.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {deepAnalysis.detectedSkills.slice(0, 20).map((sk, i) => (
+                              <span key={i} className="text-[10px] font-bold bg-slate-800 text-slate-200 px-2 py-0.5 rounded">
+                                {sk}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-xs text-slate-400">No domain-specific keywords found. Needs keyword optimization.</p>
+                        )}
+                      </div>
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                      <h5 className="text-xs font-mono font-bold text-emerald-400 uppercase mb-2 flex items-center gap-1.5">
-                        <ShieldCheck className="w-3.5 h-3.5" />
-                        <span>Verified Production Stack:</span>
-                      </h5>
-                      {deepAnalysis.detectedSkills.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
-                          {deepAnalysis.detectedSkills.map((sk, i) => (
-                            <span key={i} className="text-[10px] font-bold bg-slate-800 text-slate-200 px-2 py-0.5 rounded">
-                              {sk}
-                            </span>
+                    {/* ── Profile Strengths ── */}
+                    <div>
+                      <h5 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-3">✅ VERIFIED PROFILE STRENGTHS:</h5>
+                      <div className="space-y-2">
+                        {deepAnalysis.strengths.map((str, i) => (
+                          <div key={i} className="flex items-start gap-2.5 text-xs text-slate-200 font-medium bg-emerald-950/30 border border-emerald-900/40 rounded-xl p-2.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <span>{str}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* ── Critical Gaps ── */}
+                    <div>
+                      <h5 className="text-[10px] font-mono font-bold text-rose-400 uppercase tracking-wider mb-3">⚠️ CRITICAL GAPS FLAGGED BY RECRUITERS:</h5>
+                      <div className="space-y-2">
+                        {deepAnalysis.gaps.length > 0 ? deepAnalysis.gaps.map((gp, i) => (
+                          <div key={i} className="flex items-start gap-2.5 text-xs text-rose-300 font-medium p-3 rounded-xl bg-rose-950/40 border border-rose-900/50">
+                            <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                            <span>{gp}</span>
+                          </div>
+                        )) : (
+                          <div className="flex items-start gap-2.5 text-xs text-emerald-300 font-medium p-3 rounded-xl bg-emerald-950/30 border border-emerald-900/40">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                            <span>Strong resume — no critical gaps detected. Focus on proof of impact and apply to higher-CTC roles.</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* ── Action Plan ── */}
+                    {deepAnalysis.actionPlan && (
+                      <div>
+                        <h5 className="text-[10px] font-mono font-bold text-slate-400 uppercase tracking-wider mb-3">🛠️ PERSONALIZED 4-STEP SPRINT PLAN:</h5>
+                        <div className="space-y-2.5">
+                          {deepAnalysis.actionPlan.map((step, i) => (
+                            <div key={i} className={`flex items-start gap-3 p-3.5 rounded-2xl border ${step.priority === 'high' ? 'bg-indigo-950/50 border-indigo-800/60' : 'bg-slate-950/50 border-slate-800'}`}>
+                              <div className={`text-[11px] font-black font-mono shrink-0 w-7 h-7 flex items-center justify-center rounded-lg ${step.priority === 'high' ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-slate-300'}`}>
+                                {step.step}
+                              </div>
+                              <div>
+                                <p className="text-xs font-bold text-white mb-0.5">{step.title}</p>
+                                <p className="text-[11px] text-slate-400 leading-relaxed">{step.desc}</p>
+                              </div>
+                            </div>
                           ))}
                         </div>
-                      ) : (
-                        <p className="text-xs text-slate-400">Basic keyword density detected.</p>
-                      )}
-                    </div>
-                  </div>
+                      </div>
+                    )}
 
-                  {/* Profile Strengths */}
-                  <div>
-                    <h5 className="text-xs font-mono font-bold text-slate-400 uppercase mb-2">KEY PROFILE STRENGTHS:</h5>
-                    <div className="space-y-2">
-                      {deepAnalysis.strengths.map((str, i) => (
-                        <div key={i} className="flex items-start gap-2.5 text-xs text-slate-200 font-medium">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                          <span>{str}</span>
-                        </div>
-                      ))}
+                    {/* ── Compensation Estimate ── */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-950 to-slate-950 border border-indigo-500/40 flex items-center justify-between gap-4">
+                      <div>
+                        <span className="text-[10px] font-mono text-slate-400 block mb-0.5">CURRENT MARKET BAND</span>
+                        <span className="text-sm font-bold text-slate-300">{deepAnalysis.currentValuation}</span>
+                        <span className="text-[10px] text-slate-500 block mt-0.5">{deepAnalysis.seniority?.level || 'Entry'} · {deepAnalysis.domain} track</span>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-indigo-400 shrink-0" />
+                      <div className="text-right">
+                        <span className="text-[10px] font-mono text-emerald-400 font-bold block mb-0.5">POST-SPRINT TARGET</span>
+                        <span className="text-base font-black text-emerald-400">{deepAnalysis.targetValuation}</span>
+                        <span className="text-[10px] text-emerald-600 block mt-0.5">30-day NatureXpress Sprint</span>
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Critical Employability Gaps Flagged by HR */}
-                  <div>
-                    <h5 className="text-xs font-mono font-bold text-rose-400 uppercase mb-2">CRITICAL PROFILE GAPS FLAGGED BY RECRUITERS:</h5>
-                    <div className="space-y-2">
-                      {deepAnalysis.gaps.map((gp, i) => (
-                        <div key={i} className="flex items-start gap-2.5 text-xs text-rose-300 font-medium p-2.5 rounded-xl bg-rose-950/40 border border-rose-900/50">
-                          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                          <span>{gp}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Compensation Estimate */}
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-indigo-950 to-slate-950 border border-indigo-500/40 flex items-center justify-between">
-                    <div>
-                      <span className="text-[10px] font-mono text-slate-400 block">CURRENT MARKET ESTIMATE</span>
-                      <span className="text-sm font-bold text-slate-300">{deepAnalysis.currentValuation}</span>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-indigo-400" />
-                    <div className="text-right">
-                      <span className="text-[10px] font-mono text-emerald-400 font-bold block">TARGET SPRINT POTENTIAL</span>
-                      <span className="text-base font-black text-emerald-400">{deepAnalysis.targetValuation}</span>
-                    </div>
                   </div>
                 </motion.div>
               )}

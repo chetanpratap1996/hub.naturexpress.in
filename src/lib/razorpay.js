@@ -38,15 +38,20 @@ export const initiateRazorpayCheckout = async ({
       return;
     }
 
-    let amountInPaise = Math.round(Number(amount));
+    let numAmount = Number(amount);
+    let amountInPaise;
+    // Standardize Rupee amount to Paise (1 INR = 100 Paise)
+    // If input amount is in Rupees (e.g., 3999, 1999, 4999), convert to paise (399900)
+    if (numAmount < 50000) {
+      amountInPaise = Math.round(numAmount * 100);
+    } else {
+      amountInPaise = Math.round(numAmount);
+    }
+
     if (amountInPaise < 100) {
       alert('Amount must be at least ₹1 (100 paise)');
       if (onFailure) onFailure('Invalid amount');
       return;
-    }
-    if (amountInPaise < 1000) {
-      // Assuming amount was passed in Rupees (e.g., 3999 INR)
-      amountInPaise = amountInPaise * 100;
     }
 
     let orderId = null;

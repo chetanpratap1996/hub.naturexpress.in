@@ -27,6 +27,16 @@ async function prerender() {
     fs.writeFileSync(path.join(agencyDir, 'index.html'), finalAgencyHtml)
     console.log('Pre-rendered dist/agency/index.html (Agency Services) successfully.')
     
+    // Prerender Admin (/admin)
+    const adminHtml = render('/admin')
+    const finalAdminHtml = template.replace(`<!--app-html-->`, adminHtml)
+    const adminDir = toAbsolute('dist/admin')
+    if (!fs.existsSync(adminDir)) {
+      fs.mkdirSync(adminDir, { recursive: true })
+    }
+    fs.writeFileSync(path.join(adminDir, 'index.html'), finalAdminHtml)
+    console.log('Pre-rendered dist/admin/index.html (Sales CRM) successfully.')
+    
     // Generate Sitemap
     const date = new Date().toISOString().split('T')[0]
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

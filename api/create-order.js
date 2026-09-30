@@ -22,7 +22,7 @@ export default async function handler(req, res) {
     const { amount, currency = 'INR', receipt, notes } = req.body || {};
 
     let amountInPaise = Number(amount);
-    if (!isNaN(amountInPaise) && amountInPaise < 100) {
+    if (!isNaN(amountInPaise) && amountInPaise < 50000) {
       amountInPaise = amountInPaise * 100;
     }
 
